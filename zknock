@@ -1,0 +1,81 @@
+#! /bin/bash
+
+
+KNOCKDIR=${KNOCKDIR:-$HOME/.knock}
+if [[ ! -d "$KNOCKDIR" ]]; then
+    echo "$KNOCKDIR is not a directory."
+
+    if [[ -e "$KNOCKDIR" ]]; then
+        echo "$KNOCKDIR exists. Exiting"
+        exit 1;
+    fi
+
+    mkdir -p $KNOCKDIR
+    chmod 0700 $KNOCKDIR
+fi
+
+knock=$(which knock)
+if [[ -z "$knock" ]]; then
+    echo "Could not find knock binary."
+    exit 1;
+fi
+
+gpg=$(which gpg)
+if [[ -z "$gpg" ]]; then
+    echo "Could not find gpg binary."
+    exit 1;
+fi
+
+yn() {
+    local ch;
+
+    echo -n "$1 [Y/n]: "; read -n 1 ch; echo
+    [[ "$ch" =~ [Yy] ]] && eval $2=1 || eval $2=0
+}
+
+profile="$KNOCKDIR/${1:-.default}";
+if [[ ! -f "$profile" ]]; then
+    if [[ -e "$profile" ]]; then
+        echo "Oops. $profile is not a file."
+        exit 1
+    fi
+
+    echo -n "$profile does not exist. would you like to configure it? [Y/n]: "
+    read -n 1 ch; echo
+    if [[ ! "$ch" =~ [Yy] ]]; then
+        echo "OK, I wont."
+        exit
+    fi
+
+    echo -n "Hostname: "; read hostname;
+    echo -n "Delay (in ms): "; read delay
+    yn "Default to udp?" use_udp
+    yn "Verbose output?" verbose
+
+    i=0
+    ports=()
+    while [[ 1 = 1 ]]; do
+        ii=$(($i+1))
+        printf "Port %3d: " $ii; read ports[$i];
+    [[ -z "${ports[$i]}" ]] && break || i=$ii;
+    done
+
+    [[ $use_udp = 1 ]] && use_udp="-u" || use_udp="";
+    [[ $verbose = 1 ]] && verbose="-v" || verbose="";
+    [[ -z "$delay" ]] || delay="-d $delay";
+
+    echo "hostname=\"${hostname}\" " \
+         "use_udp=\"${use_udp}\" " \
+         "delay=\"${delay}\" " \
+         "verbose=\"${verbose}\" " \
+         "ports=(${ports[*]})" > "${profile}.$$tmp"
+
+    $gpg -o "$profile" --cipher-algo AES256 -c "${profile}.$$tmp";
+    shred -n 5 -u "${profile}.$$tmp" 2>&1 >/dev/null || rm -f "${profile}.$$tmp"
+    chmod 0400 "$profile"
+
+    exit
+fi
+
+eval $($gpg -d "$profile")
+$knock $use_udp $verbose $delay $hostname ${ports[*]}
