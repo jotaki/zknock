@@ -13,7 +13,8 @@ A simple wrapper script for the knock client distrbuted with [knock](http://www.
    * ....
    * ....
    * ....
- * A profile config file in plaintext looks something like this: `hostname="localhost"  use_udp=""  delay="-d 250"  verbose=""  ports=(12345 1234:udp 54321 )`
+ * A profile config file in plaintext looks something like this:
+   * `hostname="localhost"  use_udp=""  delay="-d 250"  verbose=""  ports=(12345 1234:udp 54321 )`
 
 ## Using zknock
 
