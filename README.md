@@ -42,7 +42,8 @@ A simple wrapper script for the knock client distrbuted with [knock](http://www.
  hitting tcp 127.0.0.1:54321
  hitting tcp 127.0.0.1:9000
  hitting tcp 127.0.0.1:8000
- hitting tcp 127.0.0.1:7000```
+ hitting tcp 127.0.0.1:7000
+ ```
 
 ## Limitations
 
