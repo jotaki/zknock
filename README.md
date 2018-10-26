@@ -7,9 +7,9 @@ A simple wrapper script for the knock client distrbuted with [knock](http://www.
  * zknock stores profiles in $KNOCKDIR. (by default this is $HOME/.knock)
  * profiles are encrypted with gpg AES256.
  * profiles are stored as their own filename, e.g
-   * $HOME/.knock/profile1
-   * $HOME/.knock/profile2
-   * $HOME/.knock/profile3
+   * $KNOCKDIR/profile1
+   * $KNOCKDIR/profile2
+   * $KNOCKDIR/profile3
    * ....
    * ....
    * ....
