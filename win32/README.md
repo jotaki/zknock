@@ -32,5 +32,5 @@ This is a "static" binary with debug symbols enabled.
 # Tools for development
  * [Vim](https://www.vim.org/)
  * git-bash [Git](https://git-scm.com/downloads)
- * gcc ([MinGW](https://mingw-w64.org/)
+ * gcc ([MinGW](https://mingw-w64.org/))
  * [ResEdit](http://www.resedit.net/)
