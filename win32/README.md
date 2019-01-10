@@ -2,7 +2,7 @@
 A Simple port knocking client for 64-bit Windows.
 
 # Support
-Appears to work on 64-bit Windows 7, unsure about other platforms.
+Appears to work on 64-bit Windows 7, unsure about other versions.
 
 # Word on status
 This is incomplete, and a bit crufty in some areas.
